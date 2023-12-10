@@ -30,7 +30,14 @@ state 是store 银行的账户数据。
  无法传递参数      通过调用其他/自身getter{return func}的方式接受参数
 */
 
-// actions
+
+/*
+
+  actions 定义业务逻辑
+  可以是异步操作
+ 相当于组件中的methods
+
+*/
 
 export const useStore = defineStore('counter', {
     state: () => {
@@ -57,7 +64,19 @@ export const useStore = defineStore('counter', {
         },
 
         getUser: (state) => (userId) => {return state.users.find((user) => user.id === userId)}
-        // 柯里化，ES6连续箭头函数
+        // 尾调用Tail Call： 函数的最后一步是调用另一个函数
+        /*
+            function f(x) {
+                return g(x);
+            }
+
+            这三种不属于尾调用
+            function f(x) { let y = g(x); return y }
+            function f(x) { return g(x) + 1 }
+            function f(x) { g(x) }  === function f(x) { g(x); return undefined; }
+
+        */
+        //  尾调用优化
         /*
             functon getUserById(state) {
                 return function(userId) {
@@ -65,6 +84,18 @@ export const useStore = defineStore('counter', {
                 }
             }
         */
+    },
+    actions: {
+        increment() {
+            this.X
+        },
+        async registerUser(login, password) {
+            try {
+              this.userData = await api.post({ login, password })
+            } catch (error) {
+              return error
+            }
+          },
     }
 })
 
